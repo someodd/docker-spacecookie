@@ -1,0 +1,6 @@
+{
+  "hostname" : "localhost",
+  "port" : 70,
+  "user" : "spacecookie",
+  "root" : "/srv/gopher"
+}
