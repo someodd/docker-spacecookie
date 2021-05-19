@@ -18,3 +18,13 @@ docker exec -t b72 bash -c "chown -R spacecookie:spacecookie /srv/gopher"
 
 It's very important to set your host to the domain you'll be using for the
 gopherhole (not localhost). For me it was my `.onion` address.
+
+## Spacecookie version
+
+This repo is setup so the latest GitHub main branch from Spacecookie is always
+used. If you want to upgrade to the latest version simply rebuild the image
+like this:
+
+```
+docker build --no-cache -t spacecookie .
+```
