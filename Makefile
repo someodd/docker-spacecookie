@@ -1,3 +1,4 @@
+# add make network? setup? etc?
 running_id := $$(docker ps --filter ancestor=spacecookie --format "{{.ID}}")
 number_running := $$( echo "$running_id" | wc -l )
 
@@ -11,7 +12,7 @@ build:
 	docker build -t spacecookie .
 
 run:
-	docker run -d -v $$(pwd)/gopher-content/:/srv/gopher --restart=always --net servicenet --hostname=spacecookie --ip=172.18.0.68 spacecookie
+	docker run -d --restart=always --net servicenet --hostname=spacecookie --ip=172.18.0.68 spacecookie
 
 test:
 	echo "$(running_id)"
