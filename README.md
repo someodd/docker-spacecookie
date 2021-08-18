@@ -1,61 +1,90 @@
-# Spacecookie Docker
+# burrow Docker server
 
-[Spacecookie](https://github.com/sternenseemann/spacecookie) is a [Gopher protocol server](https://en.wikipedia.org/wiki/Gopher_(protocol)).
+Docker server setup for automatically building a
+[gopherhole](https://en.wikipedia.org/wiki/Gopher_(protocol)) with
+[Burrow](https://github.com/hyperrealgopher/burrow) every time a commit is
+pushed and serving it with
+[Spacecookie](https://github.com/sternenseemann/spacecookie).
 
-I like to run this behind my host's Tor:
+A `Makefile` is included for your convenience:
 
-```bash
-docker network create --subnet=172.18.0.0/16 servicenet
-docker build -t spacecookie .
-docker run -d -v $(pwd)/gopher-content/:/srv/gopher --restart=always --net servicenet --hostname=spacecookie --ip=172.18.0.68 spacecookie
-```
+  * `make create_network`: You should run this first. Creates the Docker network the container will use.
+  * `make build`: Build the Docker container.
+  * `make run`: Run the Docker container as a daemon.
+  * `make shell`: Open the shell of the currently running Docker container.
 
-Sometimes when you update the files you may need to use this:
+## In case of a problem when building
 
-```
-docker exec -t b72 bash -c "chown -R spacecookie:spacecookie /srv/gopher"
-```
-
-It's very important to set your host to the domain you'll be using for the
-gopherhole (not localhost). For me it was my `.onion` address.
-
-## Spacecookie version
-
-This repo is setup so the latest GitHub main branch from Spacecookie is always
-used. If you want to upgrade to the latest version simply rebuild the image
-like this:
+If `make build` fails you can try this command instead:
 
 ```
 docker build --no-cache -t spacecookie .
 ```
 
-## With git and burrow
+## Setup client
 
-Put `id_rsa.pub` to be used for your git server in the working directory...
+Configure the machine you'll be editing the gopherhole on and pushing commits from.
 
-You can push to a `git` repo that automatically builds with `burrow`...
+Put this in your `~/.ssh/config` (set `HostName` to the host/domain/IP address
+where the Docker daemon is hosted and set `IdentityFile` to your private key
+you want to use for pushing commits):
 
 ```
-# on John's computer
+Host gopherhole
+	HostName 6pb7ikzn72tzuhg6pdlkogwgo4yslf5r6mvktdjzyssfry2uvzxthpyd.onion
+	User git
+	IdentityFile ~/.ssh/id_rsa_hgopher
+```
+
+Be sure to copy the public key (`*.pub`) for the private key you specified into
+the directory with the `Dockerfile` and `Makefile` (the root of the repo)
+*before* running `make build` (building the container).
+
+### Setup the gopherhole/repo
+
+You'll need to learn about making gopherholes with
+[Burrow](https://github.com/hyperrealgopher/burrow).
+
+```
 $ cd myproject
 $ git init
 $ git add .
 $ git commit -m 'Initial commit'
-$ git remote add origin git@172.18.0.69:/srv/git/gopherhole.git
+$ git remote add origin git@gopherhole:/srv/git/gopherhole.git
 $ git push origin master
 ```
 
-https://git-scm.com/book/en/v2/Git-on-the-Server-Setting-Up-the-Server
+You can pull from the repo.  Others can clone it down and push changes back up
+just as easily (if the have the same private key [I'll fix this soon by adding
+all the `*.pub` keys in repo root):
 
 ```
-
-
-At this point, the others can clone it down and push changes back up just as easily:
-
-$ git clone git@gitserver:/srv/git/project.git
+$ git clone git@gopherhole:/srv/git/project.git
 $ cd project
 $ vim README
 $ git commit -am 'Fix for README file'
 $ git push origin master
+```
+
+## Tor
+
+In case you want to serve via Tor edit your `/etc/tor/torrc/`:
 
 ```
+HiddenServicePort 70 172.18.0.68:70
+HiddenServicePort 22 172.18.0.68:22
+```
+
+## Software used
+
+Some info about the software used.
+
+### Spacecookie version
+
+This repo is setup so the latest GitHub main branch from Spacecookie is always
+used. If you want to upgrade to the latest version simply rebuild the image
+like this:
+
+### Burrow version
+
+...
