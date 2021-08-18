@@ -54,9 +54,11 @@ $ git remote add origin git@gopherhole:/srv/git/gopherhole.git
 $ git push origin master
 ```
 
+If you're using Tor you'll want to do `torsocks push origin master`.
+
 You can pull from the repo.  Others can clone it down and push changes back up
 just as easily (if the have the same private key [I'll fix this soon by adding
-all the `*.pub` keys in repo root):
+all the `*.pub` keys in repo root).
 
 ```
 $ git clone git@gopherhole:/srv/git/project.git
