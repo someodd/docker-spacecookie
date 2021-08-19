@@ -13,6 +13,10 @@ A `Makefile` is included for your convenience:
   * `make run`: Run the Docker container as a daemon.
   * `make shell`: Open the shell of the currently running Docker container.
 
+## Configure `spacecookie.json`
+
+...
+
 ## In case of a problem when building
 
 If `make build` fails you can try this command instead:
