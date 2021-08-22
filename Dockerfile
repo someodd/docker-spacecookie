@@ -40,7 +40,7 @@ RUN chsh -s /usr/bin/git-shell git
 
 # now add a server-side git hook for burrow
 RUN apt-get install -y wget
-RUN wget -O /tmp/burrow.deb https://github.com/hyperrealgopher/burrow/releases/download/v0.1.12.0/burrow_0.1.12.0_amd64.deb
+RUN wget -O /tmp/burrow.deb https://github.com/hyperrealgopher/burrow/releases/download/v0.1.13.0/burrow_0.1.13.0_amd64.deb
 RUN apt install /tmp/burrow.deb
 
 RUN apt-get install -y openssh-server
