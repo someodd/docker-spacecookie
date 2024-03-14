@@ -2,6 +2,11 @@
 
 [Spacecookie](https://github.com/sternenseemann/spacecookie) is a [Gopher protocol server](https://en.wikipedia.org/wiki/Gopher_(protocol)).
 
+I also made [a static gopherhole builder called
+burrow](https://github.com/someodd/burrow) and there's a [special branch of
+this project for serving a gopherhole built with
+burrow](https://github.com/someodd/docker-spacecookie/tree/feature/git-server-burrow).
+
 I like to run this behind my host's Tor:
 
 ```bash
